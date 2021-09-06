@@ -1,15 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import WallScreen from "../screens/WallScreen";
-import Newscreen from "../screens/Newscreen";
+import WallScreen from "../screens/ProductScreens/WallScreen";
+import Newscreen from "../screens/ProductScreens/Newscreen";
 import { NavigationContainer } from "@react-navigation/native";
 import AddProduct from "../screens/AddProduct";
 import ProfileScreen from "../screens/ProfileScreen";
 import Cart from "../screens/Cart";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ShoeScreen from "../screens/ShoeScreen";
+import ShoeScreen from "../screens/ProductScreens/ShoeScreen";
 import Clothes from "../screens/Clothes";
 
 export default function Navigation() {

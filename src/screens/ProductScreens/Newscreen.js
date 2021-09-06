@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  Modal,
-  TouchableHighlight,
-  TextInput,
-} from "react-native";
-import { getProducts } from "../redux/actions/userActions";
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { getProducts } from "../../redux/actions/userActions";
 import { connect, useDispatch } from "react-redux";
 import call from "react-native-phone-call";
 

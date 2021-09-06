@@ -9,12 +9,13 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-// const reducers = combineReducers({
-//   auth: authReducer,
-//   products: prod,
-// });
+const reducers = combineReducers({
+  auth: authReducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
 let store = createStore(persistedReducer, applyMiddleware(thunk));
 let persistor = persistStore(store);
 export { store, persistor };
+
+export default reducers;

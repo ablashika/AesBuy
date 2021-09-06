@@ -16,8 +16,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import MasonryList from "@react-native-seoul/masonry-list";
-import { getProducts } from "../redux/actions/userActions";
+
+import { getProducts } from "../../redux/actions/userActions";
 import { connect, useDispatch } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
 
@@ -120,95 +120,6 @@ function WallScreen({ navigation, products }) {
           </View>
         </View>
       </View>
-      {/* {loading ? (
-        <View>
-          <ActivityIndicator animating={true} />
-        </View>
-      ) : (
-        <View style={styles.container}>
-          <FlatGrid
-            refreshControl={
-              <RefreshControl
-                refreshing={loading}
-                onRefresh={() => getProducts(dispatch)}
-              />
-            }
-            // numColumns={2}
-            data={products}
-            renderItem={({ item }) => {
-              return (
-                <View style={{}}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("Newscreen", {
-                        item_details: item,
-                      })
-                    }
-                  >
-                    <Image
-                      source={{ uri: "data:image/jpeg;base64," + item.image }}
-                      style={{
-                        height: Math.round(Math.random()) ? 200 : 280,
-                        alignSelf: "stretch",
-                        borderRadius: 30,
-                      }}
-                      resizeMode="cover"
-                    />
-
-                    <Text
-                      style={{
-                        marginTop: 8,
-                      }}
-                    >
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            keyExtractor={(item, index) => `${item.name}-${index}`}
-          />
-
-          <View style={styles.buttonTab}>
-            <View
-              style={{
-                backgroundColor: "white",
-                height: 40,
-                width: 220,
-                borderRadius: 30,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="home-variant-outline"
-                  size={24}
-                  color="#b3b3b3"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Cart");
-                }}
-              >
-                <Feather name="shopping-cart" size={20} color="#b3b3b3" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <EvilIcons name="search" size={24} color="#b3b3b3" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ProfileScreen");
-                }}
-              >
-                <MaterialIcons name="person" size={24} color="#b3b3b3" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )} */}
     </>
   );
 }
@@ -227,18 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  //   nav: {
-  //     flex: 1,
-  //     height: 15,
-
-  //     justifyContent: "center",
-  //     alignItems: "flex-end",
-  //     flexDirection: "row",
-  //   },
-
   inav: {
-    // flex: 5,
-    // height: 15,
     width: 350,
     flexDirection: "row",
     justifyContent: "center",

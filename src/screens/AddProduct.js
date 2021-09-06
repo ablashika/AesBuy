@@ -4,61 +4,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  FlatList,
-  Image,
-  Picker,
   TextInput,
-  ImageStore,
 } from "react-native";
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions/userActions";
-import * as ImagePicker from "expo-image-picker";
+import Pickers from "./Components/Pickers";
 import { EvilIcons } from "@expo/vector-icons";
+import ImagePickers from "./Components/ImagePickers";
 
 function AddProduct({ addUser, navigation }) {
   const [inputValue, setInputValue] = useState("");
-
   const [image, setImage] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
-
-  const imageView = () => {
-    if (image) {
-      return (
-        <Image
-          source={{
-            uri: "data:image/jpeg;base64," + image,
-          }}
-          style={{ height: 30, width: 30, borderRadius: 5 }}
-        />
-      );
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
-      base64: true,
-    });
-
-    if (!result.cancelled) {
-      setImage(result.base64);
-    }
-  };
+  const [selectedValue, setSelectedValue] = useState("");
 
   const [users, setUser] = useState({
     name: "",
@@ -82,7 +39,6 @@ function AddProduct({ addUser, navigation }) {
     );
   };
 
-  const [selectedValue, setSelectedValue] = useState("bags");
   return (
     <View style={styles.container}>
       <View style={{ flex: 0.5 }}></View>
@@ -157,19 +113,7 @@ function AddProduct({ addUser, navigation }) {
           <Text style={{ color: "white", fontWeight: "bold" }}>
             Upload Image
           </Text>
-
-          <TouchableOpacity
-            style={{
-              marginTop: 10,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-            onPress={pickImage}
-          >
-            <EvilIcons name="image" size={24} color="black" />
-
-            {imageView()}
-          </TouchableOpacity>
+          <ImagePickers image={image} setImage={setImage} />
         </View>
         <View style={{ margin: 20, marginTop: 10 }}>
           <Text style={{ color: "white", fontWeight: "bold" }}>
@@ -209,22 +153,10 @@ function AddProduct({ addUser, navigation }) {
           <Text style={{ color: "white", fontWeight: "bold" }}>Category</Text>
         </View>
         <View>
-          <Picker
-            mode="dialog"
+          <Pickers
             selectedValue={selectedValue}
-            style={{
-              height: 50,
-              marginHorizontal: 20,
-              backgroundColor: "transpa",
-            }}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
-            }
-          >
-            {/* <Picker.Item label="trendy" color="white" value="trendy" /> */}
-            <Picker.Item label="clothes" color="white" value="clothes" />
-            <Picker.Item label="shoes" color="white" value="shoes" />
-          </Picker>
+            setSelectedValue={setSelectedValue}
+          />
         </View>
       </View>
     </View>

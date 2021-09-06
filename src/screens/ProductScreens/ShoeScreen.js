@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { getShoes } from "../redux/actions/userActions";
+import { getShoes } from "../../redux/actions/userActions";
 import { connect, useDispatch } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
 

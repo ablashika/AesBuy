@@ -13,7 +13,7 @@ export function addUser(
     name: name,
     price: price,
     description: description,
-    image,
+    image: image,
     category: selectedValue,
     phoneNumber: inputValue,
   };
