@@ -160,6 +160,7 @@ import { View, StyleSheet, Text, FlatList, Image, RefreshControl, TouchableOpaci
 import { MaterialCommunityIcons, Feather, EvilIcons, MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../redux/slice/userSlice";
+import { FlatGrid } from "react-native-super-grid";
 // import { getProducts } from "../../redux/actions"; // Import your getProducts action
 
 function WallScreen({ navigation }) {
@@ -179,7 +180,7 @@ function WallScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <FlatList
+      <FlatGrid
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={() => dispatch(getProducts())} />
         }

@@ -10,7 +10,7 @@ import Cart from "../screens/Cart";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ShoeScreen from "../screens/ProductScreens/ShoeScreen";
-import Clothes from "../screens/Clothes";
+import Clothes from "../screens/ProductScreens/Clothes";
 
 export default function Navigation() {
   const Stack = createStackNavigator();

@@ -6,16 +6,19 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { connect } from "react-redux";
-import { addUser } from "../redux/actions/userActions";
+// import { connect } from "react-redux";
+// import { addUser } from "../redux/actions/userActions";
 import Pickers from "./Components/Pickers";
 import { EvilIcons } from "@expo/vector-icons";
 import ImagePickers from "./Components/ImagePickers";
+import { useDispatch } from "react-redux";
+import { addUser} from "../redux/slice/userSlice";
 
-function AddProduct({ addUser, navigation }) {
+function AddProduct({ navigation }) {
   const [inputValue, setInputValue] = useState("");
   const [image, setImage] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("")
+  
 
   const [users, setUser] = useState({
     name: "",
@@ -24,19 +27,22 @@ function AddProduct({ addUser, navigation }) {
     category: "",
     phoneNumber: "",
   });
+  const dispatch = useDispatch();
+
+
   const handleUpdateState = (name, value) => {
     setUser({ ...users, [name]: value });
   };
 
   const handleOnsubmit = () => {
-    addUser(
+    dispatch(addUser(
       users.name,
       users.price,
       users.description,
       image,
       selectedValue,
       inputValue
-    );
+    ));
   };
 
   return (
@@ -67,9 +73,7 @@ function AddProduct({ addUser, navigation }) {
             {/* <Text style={{ color: "white" }}>*</Text> */}
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              handleOnsubmit();
-            }}
+              onPress={() => handleOnsubmit()}
             style={{
               backgroundColor: "black",
               height: 20,
@@ -180,10 +184,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    //  auth:state,
-    user: state,
-  };
-};
-export default connect(mapStateToProps, { addUser })(AddProduct);
+// const mapStateToProps = (state) => {
+//   return {
+//     //  auth:state,
+//     user: state,
+//   };
+// };
+export default AddProduct;

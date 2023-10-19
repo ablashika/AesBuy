@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { db } from '../../firebase/firebase';
-import firebase from '../../firebase/firebase';
+import { db,auth } from '../../firebase/firebase';
 
 const userSlice = createSlice({
   name: 'user',
@@ -34,27 +33,34 @@ const userSlice = createSlice({
     setClothes: (state, action) => {
       state.clothes = action.payload;
     },
+    addUser: (state, action) => {
+        // You can update your state with the new user data here
+          state.products.push(action.payload);
+      },
   },
 });
 
 // Asynchronous actions (thunks)
+
 export const addUser = (name, price, description, image, selectedValue, inputValue) => async (dispatch) => {
-  try {
-    const user = await firebase.auth();
-    const data = {
-      name,
-      price,
-      description,
-      image,
-      category: selectedValue,
-      phoneNumber: inputValue,
-    };
-    await firebase.firestore().collection('products').add(data);
-    dispatch(loginSuccess(user));
-  } catch (error) {
-    console.error('Error adding user:', error);
-  }
-};
+    try {
+      const user = auth; // Use the initialized auth object
+      const data = {
+        name,
+        price,
+        description,
+        image,
+        category: selectedValue,
+        phoneNumber: inputValue,
+      };
+      await db.collection('products').add(data); // Use db from your initialized Firebase
+      dispatch(addUser(user));
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
+  
+
 
 export const getProducts = () => async (dispatch) => {
     try {
@@ -104,7 +110,7 @@ export const getClothes = () => async (dispatch) => {
 
 export const {
     loggedIn,
-    // addUser,
+    addUsers,
     getUser,
     loggedOut,
     loginError,

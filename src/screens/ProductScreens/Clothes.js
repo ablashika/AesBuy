@@ -4,21 +4,18 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import MasonryList from "@react-native-seoul/masonry-list";
-import {
-  getClothes,
-  getProducts,
-  getShoes,
-} from "../redux/actions/userActions";
-import { connect, useDispatch } from "react-redux";
+import { getClothes } from "../../redux/slice/userSlice";
+import {useDispatch,useSelector } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
 
-function Clothes({ navigation, clothes }) {
+function Clothes({ navigation}) {
   const dispatch = useDispatch();
+  const clothes = useSelector((state) => state.user.clothes);
 
+console.log(clothes,"jss")
   useEffect(() => {
-    // console.log(clothes);
-    getClothes(dispatch);
+     console.log(clothes);
+     dispatch(getClothes())
   }, []);
 
   return (
@@ -181,12 +178,6 @@ const styles = StyleSheet.create({
     marginTop: -120,
   },
 });
-const mapStateToProps = (state) => {
-  return {
-    auth: state,
-    user: state,
-    clothes: state.clothes,
-  };
-};
 
-export default connect(mapStateToProps)(Clothes);
+
+export default Clothes;
