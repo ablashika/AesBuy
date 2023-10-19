@@ -1,5 +1,5 @@
 import firebase from "../../firebase/firebase";
-const db = firebase.firestore();
+import { db } from '../../firebase/firebase'
 
 export function addUser(
   name,
@@ -17,6 +17,8 @@ export function addUser(
     category: selectedValue,
     phoneNumber: inputValue,
   };
+
+  
 
   return async (dispatch) => {
     try {

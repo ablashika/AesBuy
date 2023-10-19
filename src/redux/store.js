@@ -1,21 +1,20 @@
-import { applyMiddleware, createStore, combineReducers } from "redux";
-import authReducer from "./reducers/authReducer";
-import thunk from "redux-thunk";
-import { AsyncStorage } from "react-native";
-import { persistStore, persistReducer } from "redux-persist";
+// 
+// store.js
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from './slice/userSlice';
 
-const persistConfig = {
-  key: "root",
-  storage: AsyncStorage,
-};
-
-const reducers = combineReducers({
-  auth: authReducer,
+const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: false, // Disable serializability check for Firestore data
+  }),
 });
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
-let store = createStore(persistedReducer, applyMiddleware(thunk));
-let persistor = persistStore(store);
-export { store, persistor };
 
-export default reducers;
+
+
+
+export default store;

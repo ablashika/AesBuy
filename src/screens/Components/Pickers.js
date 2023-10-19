@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Picker } from "react-native";
+import { View } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 
 export default function Pickers({ selectedValue, setSelectedValue }) {
   return (
