@@ -23,9 +23,18 @@ export default function ImagePickers({ image, setImage }) {
       aspect: [4, 3],
       quality: 0.5,
       base64: true,
+      assets:true
     });
 
-    if (!result.cancelled) {
+
+    // if (!result.canceled) {
+    //   // Access the selected image from the "assets" array
+    //   const selectedImage = result.assets[0];
+  
+    //   // Access other properties if needed, e.g., selectedImage.uri
+    //   setImage(selectedImage.uri);
+    // }
+    if (!result.canceled) {
       setImage(result.base64);
     }
   };

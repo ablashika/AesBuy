@@ -11,6 +11,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ShoeScreen from "../screens/ProductScreens/ShoeScreen";
 import Clothes from "../screens/ProductScreens/Clothes";
+import LandingPage from "../screens/LandingPage";
 
 export default function Navigation() {
   const Stack = createStackNavigator();
@@ -37,6 +38,7 @@ export default function Navigation() {
         <Tab.Screen name="trendy" component={WallScreen} />
         <Tab.Screen name="clothes" component={Clothes} />
         <Tab.Screen name="shoes" component={ShoeScreen} />
+      
       </Tab.Navigator>
     );
   }
@@ -50,6 +52,7 @@ export default function Navigation() {
           },
         }}
       >
+        <Stack.Screen name="screen" component={LandingPage} />
         <Stack.Screen
           options={{
             header: () => null,
@@ -59,7 +62,9 @@ export default function Navigation() {
         />
         <Stack.Screen name="Newscreen" component={Newscreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="AddProduct" component={AddProduct} />
+        <Stack.Screen name="AddProduct" component={AddProduct} 
+      
+        />
         <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>

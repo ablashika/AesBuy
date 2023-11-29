@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#e9e6f5",
-    // alignItems: "",
-    // justifyContent: "center",
   },
   imageBox: {
     margin: 30,

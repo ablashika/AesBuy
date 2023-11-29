@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { db,auth } from '../../firebase/firebase';
+import { db,auth, addDoc, collection,getDoc} from '../../firebase/firebase';
 
 const userSlice = createSlice({
   name: 'user',
@@ -10,6 +10,7 @@ const userSlice = createSlice({
     products: [],
     shoes: [],
     clothes: [],
+    selectedItems: [],
   },
   reducers: {
     // Synchronous actions
@@ -37,35 +38,70 @@ const userSlice = createSlice({
         // You can update your state with the new user data here
           state.products.push(action.payload);
       },
+
+        setSelectedItems: (state, action) => {
+      state.selectedItems = action.payload;
+    },
+
+
+    addToSelectedItems: (state, action) => {
+      const itemId = action.payload;
+      const item = state.products.find((item) => item.id === itemId);
+      console.log(item.id, "ss");
+      console.log(itemId, "ss");
+    
+      if (item) {
+        // Assuming you want to add the item to selectedItems only if it's not already present
+        if (!state.selectedItems.find((selectedItem) => selectedItem.id === itemId)) {
+          state.selectedItems = [...state.selectedItems, item];
+          console.log(state.selectedItems, "Updated selectedItems");
+        } else {
+          state.selectedItems = state.selectedItems.filter((selectedItem) => selectedItem.id !== itemId);
+          console.log(state.selectedItems, "Removed item from selectedItems");
+    
+        }
+      } else {
+        console.log("Item not found in products");
+      }
+    },
+
+  
   },
+  
+
+
 });
 
-// Asynchronous actions (thunks)
+
 
 export const addUser = (name, price, description, image, selectedValue, inputValue) => async (dispatch) => {
-    try {
-      const user = auth; // Use the initialized auth object
-      const data = {
-        name,
-        price,
-        description,
-        image,
-        category: selectedValue,
-        phoneNumber: inputValue,
-      };
-      await db.collection('products').add(data); // Use db from your initialized Firebase
-      dispatch(addUser(user));
-    } catch (error) {
-      console.error('Error adding user:', error);
-    }
-  };
-  
+  try {
+    const user = auth.currentUser; // Use the initialized auth object
+    const data = {
+      name:name,
+      price:price,
+      description:description,
+      image: image,
+       category: selectedValue,
+       phoneNumber: inputValue,
+       id: Math.random() * 10000,
+    };
+
+    // Use addDoc() and wait for the Promise to resolve
+    const docRefPromise = addDoc(collection(db, 'products'), data);
+    const docRef = await docRefPromise;
+
+    // Access the ID using docRef.id
+    dispatch(addUser(user, docRef.id, /* other arguments */));
+  } catch (error) {
+    console.error('Error adding user:', error);
+  }
+};
 
 
 export const getProducts = () => async (dispatch) => {
     try {
-      const collectionRef = db.collection('products'); // Ensure db is correctly initialized
-  
+      const collectionRef = db.collection('products'); // Ensure db is correctly initialize
       const snapshot = await collectionRef.get();
       const products = snapshot.docs.map((doc) => doc.data());
       dispatch(setProducts(products));
@@ -117,6 +153,17 @@ export const {
     setProducts,
     setShoes,
     setClothes,
+    setSelectedItems,
+    addToSelectedItems,
+    removeFromSelectedItems,
+   
+
   } = userSlice.actions;
-  
+
+
+
+export const selectSelectedItems = (state) => state.user.selectedItems;
+
+console.log(selectSelectedItems,"ee")
+
   export default userSlice.reducer;

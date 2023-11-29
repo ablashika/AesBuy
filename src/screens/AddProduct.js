@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import {
   View,
   StyleSheet,
@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-// import { connect } from "react-redux";
-// import { addUser } from "../redux/actions/userActions";
+
 import Pickers from "./Components/Pickers";
 import { EvilIcons } from "@expo/vector-icons";
 import ImagePickers from "./Components/ImagePickers";
 import { useDispatch } from "react-redux";
-import { addUser} from "../redux/slice/userSlice";
+import { addUser,reloadApp } from "../redux/slice/userSlice";
+// import { } from '../redux/slice/userSlice';
 
-function AddProduct({ navigation }) {
+function AddProduct({ navigation,route }) {
   const [inputValue, setInputValue] = useState("");
   const [image, setImage] = useState("");
   const [selectedValue, setSelectedValue] = useState("")
@@ -31,18 +31,24 @@ function AddProduct({ navigation }) {
 
 
   const handleUpdateState = (name, value) => {
-    setUser({ ...users, [name]: value });
+      setUser((prevUsers) => ({ ...prevUsers, [name]: value })); 
+    // setUser({ ...users, [name]: value });
   };
 
   const handleOnsubmit = () => {
+    
+
     dispatch(addUser(
       users.name,
-      users.price,
-      users.description,
+      users.price  || 0,
+      users.description || "",
       image,
       selectedValue,
-      inputValue
+      inputValue || ""
     ));
+
+    // dispatch(reloadApp()); // Dispatch the reloadPage action
+    navigation.navigate('WallScreen');
   };
 
   return (

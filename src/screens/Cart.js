@@ -14,17 +14,22 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 export default function Cart({ navigation }) {
-  const jackets = [
-    {
-      id: "id123",
-      imgURL:
-        "https://images.unsplash.com/photo-1594032194509-0056023973b2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-      text: "Pioneer ",
-      price: "90gh",
-    },
-  ];
+
+  const cartItems = useSelector((state)=>state.user.selectedItems)
+  console.log(cartItems,"hey")
+  // const jackets = [
+  //   {
+  //     id: "id123",
+  //     imgURL:
+  //       "https://images.unsplash.com/photo-1594032194509-0056023973b2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+  //     text: "Pioneer ",
+  //     price: "90gh",
+  //   },
+    
+  // ];
 
   return (
     <View style={styles.container}>
@@ -33,7 +38,7 @@ export default function Cart({ navigation }) {
       </View>
       <View style={{ flex: 5 }}>
         <FlatList
-          data={jackets}
+          data={cartItems}
           renderItem={({ item }) => {
             return (
               <View>
@@ -51,7 +56,7 @@ export default function Cart({ navigation }) {
               </View>
             );
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => `${item.id}`}
         />
       </View>
 
@@ -142,3 +147,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
+

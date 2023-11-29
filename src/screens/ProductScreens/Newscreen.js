@@ -49,7 +49,7 @@ function Newscreen({
               {item_details.description}
             </Text>
 
-            <Text style={{ color: "white", marginTop: 20, fontWeight: "bold" }}>
+            <Text style={{ color: "white", marginTop: 5, fontWeight: "bold" }}>
               {item_details.price}
             </Text>
           </View>
@@ -112,12 +112,13 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    height: 250,
+    // height: 250,
     width: 150,
     backgroundColor: "black",
     margin: 5,
     marginTop: 40,
     alignItems: "center",
+    paddingBottom:10
   },
 
   imageBox: {
@@ -125,7 +126,6 @@ const styles = StyleSheet.create({
     height: 350,
     width: 150,
     marginRight: 20,
-    // marginTop: 10,
     borderRadius: 20,
   },
   lastbox: {
@@ -192,12 +192,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state,
-    user: state,
-    products: state.products,
-  };
-};
 
-export default connect(mapStateToProps)(Newscreen);
+
+export default Newscreen;
