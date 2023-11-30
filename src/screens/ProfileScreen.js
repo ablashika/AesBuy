@@ -14,9 +14,7 @@ export default function ProfileScreen({ navigation }) {
       <View
         style={{
           flex: 4,
-          // backgroundColor: "blue",
           alignItems: "center",
-          // justifyContent: "center",
         }}
       >
         <TouchableOpacity

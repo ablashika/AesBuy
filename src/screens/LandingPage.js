@@ -32,7 +32,7 @@ const LandingPage = ({ navigation }) => {
           <View >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("SignUp");
+            navigation.navigate("LogIn");
           }}
      
         >

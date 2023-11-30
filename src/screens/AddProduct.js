@@ -31,13 +31,11 @@ function AddProduct({ navigation,route }) {
 
 
   const handleUpdateState = (name, value) => {
-      // setUser((prevUsers) => ({ ...prevUsers, [name]: value })); 
-    setUser({ ...users, [name]: value });
+     setUser((prevUsers) => ({ ...prevUsers, [name]: value })); 
+   // setUser({ ...users, [name]: value });
   };
 
   const handleOnsubmit = () => {
-    
-
     dispatch(addUser(
       users.name,
       users.price  || 0,
@@ -52,8 +50,7 @@ function AddProduct({ navigation,route }) {
   };
 
   return (
-    <View style={styles.container}>
-      
+    <View style={styles.container}>   
       <View style={{ flex: 0.5 }}></View>
       <View style={styles.mainContainer}>
         <View

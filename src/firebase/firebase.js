@@ -16,25 +16,11 @@ const firebaseConfig = {
 
 
 
-// Initialize Firebase
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// }
-
-
-// Initialize Firebase
-// if (firebase.app.length) {
-  // 
-// } else {
-//   ; // if already initialized, use that one
-// }
-
-// firebase.app()
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const db = firebaseApp.firestore();
-console.log(db,"ddd")
 const auth = firebase.auth();
 
-export { db, auth, firebaseApp, addDoc, collection, getDoc,doc };;
+export { db, auth, firebaseApp, addDoc, collection, getDoc,doc };
+
