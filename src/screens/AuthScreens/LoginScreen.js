@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { EvilIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/slice/authSlice';
+import { loginUser,addAuthUser } from '../../redux/slice/authSlice';
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
-  const users = useSelector((state) => state.auth);
+  const users = useSelector((state) => state.auth.authUser);
   console.log(users,"heyy")
 
   const [loginData, setLoginData] = useState({
@@ -16,11 +16,13 @@ export default function LoginScreen({ navigation }) {
   });
 
   const handleUpdateState = (name, value) => {
+    console.log(loginData,"llheyy")
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleOnSubmit = async () => {
     try {
+        await dispatch(addAuthUser(loginData));
         await dispatch(loginUser(loginData.email, loginData.password));
         if (!authError) {
           navigation.navigate('WallScreen');
@@ -96,7 +98,8 @@ export default function LoginScreen({ navigation }) {
              <Text>Don't have an account?</Text>
     
             <TouchableOpacity
-              onPress={() => handleOnSubmit() }
+
+               onPress={() => handleOnSubmit() }
               disabled={!!authError} 
               style={{
                 backgroundColor: "black",

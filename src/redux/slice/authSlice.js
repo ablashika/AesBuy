@@ -15,10 +15,9 @@ const authSlice = createSlice({
   },
   reducers: {
 
-    addAuthUser:(state, action)=>{
-        console.log('Handling addAuthUser action:', state);
-            state.authUser = { ...state.authUser, ...action.payload };
-         },
+    addAuthUser: (state, action) => {
+        state.authUser = { ...state.authUser, ...action.payload };
+      },
     
  loginSuccess: (state, action) => {
   
@@ -45,10 +44,12 @@ const authSlice = createSlice({
 });
 
 export const loginUser = (email, password) => async (dispatch) => {
+
     try {
       const userCredential = await auth.signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
-      dispatch(loginSuccess(user));
+      const authUserData = {}; // Fetch data from your data source
+      dispatch(loginSuccess({ user, authUser: authUserData }));
     } catch (error) {
       dispatch(loginError(error.message));
     }
@@ -71,6 +72,7 @@ export const logoutUser = () => async (dispatch) => {
     try {
       const userCredential = await auth.createUserWithEmailAndPassword(authUser.email, authUser.password);
       const user = userCredential.user;
+      
       dispatch(loginSuccess(user));
     } catch (error) {
       dispatch(loginError(error.message));

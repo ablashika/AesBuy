@@ -1,14 +1,22 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function ProfileScreen({ navigation }) {
+
+  const currentUser = useSelector((state) => state.auth.authUser)
+  console.log(currentUser,"ss")
+// useEffect(()=>{
+// ≈
+// })
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.imageBox}></View>
         <View style={{ flexDirection: "column" }}>
-          <Text>Ablashika</Text>
-          <Text>Ablashika</Text>
+          <Text>{currentUser.name}</Text>
+          <Text>{currentUser.email}</Text>
         </View>
       </View>
       <View
