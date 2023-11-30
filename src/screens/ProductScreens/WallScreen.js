@@ -1,10 +1,8 @@
-
-
 import React, { useEffect,useState } from "react";
 import { View, StyleSheet, Text, Image, RefreshControl, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons, Feather, EvilIcons, MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, setProducts, addToSelectedItems,removeFromSelectedItems,selectSelectedItems  } from "../../redux/slice/userSlice";
+import { getProducts, setProducts, addToSelectedItems,setLoading } from "../../redux/slice/userSlice";
 import { FlatGrid } from "react-native-super-grid";
 
 
@@ -12,18 +10,35 @@ function WallScreen({ navigation }) {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.user.products);
   const [toggleStates, setToggleStates] = useState({});
+  const [loadingData, setLoadingData] = useState(false);
+
+
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProducts()); 
+    dispatch(setLoading(true)) 
   }, [dispatch]);
   
 
-  const loading = useSelector((state) => state.loading);
+  const loading = useSelector((state) => state.user.loading);
+  console.log(loading,"heyy")
 
-  const onRefresh = () => {
-    dispatch(setProducts([])); // Clear the existing products in the state
-    dispatch(getProducts()); // Fetch the products again
+
+  const onRefresh = async () => {
+    dispatch(setLoading(true));
+    setLoadingData(true);
+  
+    try {
+      dispatch(setProducts([]));
+      await dispatch(getProducts());
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoadingData(false);
+      dispatch(setLoading(false));
+    }
   };
+  
 
   const onHeartClick = (itemId) => {
 
@@ -35,13 +50,21 @@ function WallScreen({ navigation }) {
       dispatch(addToSelectedItems(itemId));
     
   }
+  if (loading || loadingData) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
 
   return (
     <View style={styles.container}>
-      <FlatGrid
+     
+        <FlatGrid
         refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          <RefreshControl refreshing={loading} onRefresh={onRefresh}  />
         }
         showsVerticalScrollIndicator={false}
         data={products}
@@ -86,7 +109,7 @@ function WallScreen({ navigation }) {
         )}
         keyExtractor={(item) => `${item.id}`}
       />
-
+      
       <View style={styles.buttonTab}>
         <View
           style={{

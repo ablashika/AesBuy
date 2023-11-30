@@ -11,6 +11,7 @@ const userSlice = createSlice({
     shoes: [],
     clothes: [],
     selectedItems: [],
+    loading:false
   },
   reducers: {
     // Synchronous actions
@@ -35,7 +36,6 @@ const userSlice = createSlice({
       state.clothes = action.payload;
     },
     addUser: (state, action) => {
-        // You can update your state with the new user data here
           state.products.push(action.payload);
       },
 
@@ -43,22 +43,24 @@ const userSlice = createSlice({
       state.selectedItems = action.payload;
     },
 
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+
 
     addToSelectedItems: (state, action) => {
       const itemId = action.payload;
       const item = state.products.find((item) => item.id === itemId);
-      console.log(item.id, "ss");
-      console.log(itemId, "ss");
+   
+      // console.log(item, "ss");
     
       if (item) {
-        // Assuming you want to add the item to selectedItems only if it's not already present
+
         if (!state.selectedItems.find((selectedItem) => selectedItem.id === itemId)) {
-          state.selectedItems = [...state.selectedItems, item];
-          console.log(state.selectedItems, "Updated selectedItems");
+          state.selectedItems = [...state.selectedItems, item];console.log(state.selectedItems, "Updated selectedItems");
         } else {
           state.selectedItems = state.selectedItems.filter((selectedItem) => selectedItem.id !== itemId);
-          console.log(state.selectedItems, "Removed item from selectedItems");
-    
+         
         }
       } else {
         console.log("Item not found in products");
@@ -92,7 +94,7 @@ export const addUser = (name, price, description, image, selectedValue, inputVal
     const docRef = await docRefPromise;
 
     // Access the ID using docRef.id
-    dispatch(addUser(user, docRef.id, /* other arguments */));
+    dispatch(addUser(user, docRef.id));
   } catch (error) {
     console.error('Error adding user:', error);
   }
@@ -100,7 +102,9 @@ export const addUser = (name, price, description, image, selectedValue, inputVal
 
 
 export const getProducts = () => async (dispatch) => {
+  dispatch(setLoading(false));
     try {
+     
       const collectionRef = db.collection('products'); // Ensure db is correctly initialize
       const snapshot = await collectionRef.get();
       const products = snapshot.docs.map((doc) => doc.data());
@@ -108,19 +112,12 @@ export const getProducts = () => async (dispatch) => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
+   finally {
+    dispatch(setLoading(false)); // Set loading to false whether successful or not
+  }
   };
 
-// export const getProducts = () => async (dispatch) => {
-//     try {
-//       const usersRef = db.collection('products');
-//       console.log(db,"ee")
-//       const snapshot = await usersRef.get();
-//       const products = snapshot.docs.map((doc) => doc.data());
-//       dispatch(setProducts(products));
-//     } catch (error) {
-//       console.error('Error fetching products:', error);
-//     }
-//   };
+
 
 export const getShoes = () => async (dispatch) => {
   try {
@@ -156,14 +153,13 @@ export const {
     setSelectedItems,
     addToSelectedItems,
     removeFromSelectedItems,
-   
-
+    setLoading
   } = userSlice.actions;
 
 
 
 export const selectSelectedItems = (state) => state.user.selectedItems;
 
-console.log(selectSelectedItems,"ee")
+
 
   export default userSlice.reducer;

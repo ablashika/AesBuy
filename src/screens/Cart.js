@@ -44,13 +44,15 @@ export default function Cart({ navigation }) {
               <View>
                 <View style={styles.cartBox}>
                   <View style={{ flexDirection: "row" }}>
-                    <Image source={{ uri: item.imgURL }} style={styles.image} />
+                    <Image source={{ uri:  "data:image/jpeg;base64," + item.image}} style={styles.image} />
                   </View>
                   <View style={{ height: 60, margin: 10 }}>
                     <Text style={{ marginBottom: 10, fontWeight: "bold" }}>
-                      {item.text}
+                    {item.name}
                     </Text>
+          
                     <Text>{item.price}</Text>
+                    
                   </View>
                 </View>
               </View>

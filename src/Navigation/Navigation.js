@@ -12,6 +12,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ShoeScreen from "../screens/ProductScreens/ShoeScreen";
 import Clothes from "../screens/ProductScreens/Clothes";
 import LandingPage from "../screens/LandingPage";
+import SignUpScreen from "../screens/AuthScreens/SignUpScreen";
 
 export default function Navigation() {
   const Stack = createStackNavigator();
@@ -66,6 +67,7 @@ export default function Navigation() {
       
         />
         <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

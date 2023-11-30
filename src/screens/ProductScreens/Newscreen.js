@@ -6,7 +6,6 @@ import call from "react-native-phone-call";
 
 function Newscreen({
   navigation,
-  products,
   route: {
     params: { item_details },
   },
