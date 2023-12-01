@@ -5,13 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addAuthUser,createEmailAccount  }  from '../../redux/slice/authSlice';
 
 export default function SignUpScreen({navigation}) {
-
   const dispatch = useDispatch();
   const authUsers = useSelector((state) => state.auth.authUser);
   console.log(authUsers,"user")
   const error = useSelector((state) => state.auth.error);
-
-
     const [authUser, setAuthUser] = useState({
           name: "",
           email: "",
@@ -26,7 +23,9 @@ export default function SignUpScreen({navigation}) {
 
       const handleOnsubmit = async () => {  
         dispatch(addAuthUser(authUser));
-        dispatch(createEmailAccount(authUser));
+
+
+        await dispatch(createEmailAccount(authUser));
         console.log(authUser, "rr");
       };
       

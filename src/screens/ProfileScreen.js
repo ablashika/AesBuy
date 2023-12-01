@@ -1,11 +1,20 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData} from '../redux/slice/authSlice';
 
 
 export default function ProfileScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.authUser);
+  const user = useSelector((state) => state.auth.user);
+ 
 
-  const currentUser = useSelector((state) => state.auth.user.user)
+
+  useEffect(() => {
+       dispatch(fetchUserData(currentUser.uid));
+    
+  }, [dispatch, currentUser]);
 
 
   return (
@@ -13,8 +22,8 @@ export default function ProfileScreen({ navigation }) {
       <View style={styles.profileBox}>
         <View style={styles.imageBox}></View>
         <View style={{ flexDirection: "column" }}>
-          <Text>{currentUser.displayName}</Text>
-          <Text>{currentUser.email}</Text>
+          <Text>{user.name}</Text>
+          <Text>{user.email}</Text>
         </View>
       </View>
       <View
@@ -34,11 +43,13 @@ export default function ProfileScreen({ navigation }) {
         <TouchableOpacity style={styles.box}>
           <Text>My orders</Text>
         </TouchableOpacity>
-  
       </View>
     </View>
   );
 }
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

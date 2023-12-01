@@ -5,7 +5,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     login: false,
-    user: null,
+    user: {},
     error: {},
     products: [],
     shoes: [],

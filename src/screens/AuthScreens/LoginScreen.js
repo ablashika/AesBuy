@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { EvilIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser,addAuthUser } from '../../redux/slice/authSlice';
+import { loginUser,addAuthUser, fetchUserData } from '../../redux/slice/authSlice';
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
-  const users = useSelector((state) => state.auth.authUser);
-  console.log(users,"heyy")
+  const users = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.authUser);
+  console.log(user,"heyy")
 
   const [loginData, setLoginData] = useState({
-    // name: "",
     email: "",
     password: "",
   });
@@ -21,11 +21,15 @@ export default function LoginScreen({ navigation }) {
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleOnSubmit = async () => {
+const handleOnSubmit = async () => {
     try {
-        await dispatch(addAuthUser(loginData));
-        await dispatch(loginUser(loginData.email, loginData.password));
-        if (!authError) {
+        await dispatch(addAuthUser(loginData)); // Add user first
+        await dispatch(loginUser( loginData.email, loginData.password)); // Then login
+
+        // dispatch(fetchUserData(user.uid));
+    
+        if (!authError && user) {
+            // dispatch(fetchUserData(user.uid));
           navigation.navigate('WallScreen');
         }
       } catch (error) {
