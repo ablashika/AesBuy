@@ -5,17 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function ProfileScreen({ navigation }) {
 
-  const currentUser = useSelector((state) => state.auth.authUser)
-  console.log(currentUser,"ss")
-// useEffect(()=>{
-// ≈
-// })
+  const currentUser = useSelector((state) => state.auth.user.user)
+
+
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.imageBox}></View>
         <View style={{ flexDirection: "column" }}>
-          <Text>{currentUser.name}</Text>
+          <Text>{currentUser.displayName}</Text>
           <Text>{currentUser.email}</Text>
         </View>
       </View>
@@ -36,7 +34,7 @@ export default function ProfileScreen({ navigation }) {
         <TouchableOpacity style={styles.box}>
           <Text>My orders</Text>
         </TouchableOpacity>
-        {/* <View style={styles.box}></View> */}
+  
       </View>
     </View>
   );
@@ -55,7 +53,6 @@ const styles = StyleSheet.create({
   },
   profileBox: {
     alignItems: "center",
-    // justifyContent: "flex-start",
     flexDirection: "row",
     backgroundColor: "#e9e6f5",
     flex: 2,

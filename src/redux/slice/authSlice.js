@@ -72,6 +72,9 @@ export const logoutUser = () => async (dispatch) => {
     try {
       const userCredential = await auth.createUserWithEmailAndPassword(authUser.email, authUser.password);
       const user = userCredential.user;
+      await user.updateProfile({
+        displayName: authUser.name,
+      });
       
       dispatch(loginSuccess(user));
     } catch (error) {

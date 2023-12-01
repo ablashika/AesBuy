@@ -11,6 +11,7 @@ export default function LoginScreen({ navigation }) {
   console.log(users,"heyy")
 
   const [loginData, setLoginData] = useState({
+    // name: "",
     email: "",
     password: "",
   });
@@ -99,7 +100,7 @@ export default function LoginScreen({ navigation }) {
     
             <TouchableOpacity
 
-               onPress={() => handleOnSubmit() }
+               onPress={() => navigation.navigate("SignUp") }
               disabled={!!authError} 
               style={{
                 backgroundColor: "black",
