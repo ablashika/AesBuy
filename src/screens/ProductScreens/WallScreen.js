@@ -87,7 +87,7 @@ function WallScreen({ navigation }) {
                 resizeMode="cover"
               />
 
-              <Text style={{ marginTop: 8 }}>{item.name}</Text>
+              <Text style={{ margin: 8,  color:"#333", fontWeight:"bold", fontSize:11  }}>{item.name}</Text>
 
               <TouchableOpacity
                 style={{
@@ -101,7 +101,7 @@ function WallScreen({ navigation }) {
                 <MaterialIcons
                   name={toggleStates[item.id]  ? "favorite" : "favorite-border"}
                   size={24}
-                  color="black"
+                  color="#333"
                 />
               </TouchableOpacity>
             </TouchableOpacity>

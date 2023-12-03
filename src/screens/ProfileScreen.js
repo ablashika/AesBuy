@@ -1,29 +1,29 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData} from '../redux/slice/authSlice';
-
+import { fetchUserData, logoutUser} from '../redux/slice/authSlice';
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.authUser);
   const user = useSelector((state) => state.auth.user);
- 
-
-
+  console.log(user,"heyuy")
   useEffect(() => {
-       dispatch(fetchUserData(currentUser.uid));
-    
-  }, [dispatch, currentUser]);
+       dispatch(fetchUserData(currentUser.email));  
+  }, [dispatch]);
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigation.navigate("screen");
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.imageBox}></View>
         <View style={{ flexDirection: "column" }}>
-          <Text>{user.name}</Text>
-          <Text>{user.email}</Text>
+           <Text>{user.name}</Text>
+         <Text>{user.email}</Text>
         </View>
       </View>
       <View
@@ -40,8 +40,10 @@ export default function ProfileScreen({ navigation }) {
         >
           <Text>Supply product</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.box}>
-          <Text>My orders</Text>
+        <TouchableOpacity style={styles.box}
+        onPress={handleLogout}
+        >
+          <Text>Log out</Text>
         </TouchableOpacity>
       </View>
     </View>

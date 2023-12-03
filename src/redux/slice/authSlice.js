@@ -6,7 +6,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     login: false,
-    error: null,
+    error:null,
     user: {},
     authUser:{
         email: '',
@@ -20,27 +20,36 @@ const authSlice = createSlice({
     addAuthUser: (state, action) => {
         state.authUser = { ...state.authUser, ...action.payload };
         state.login = true; 
-        state.error = null;
+        // state.error = {};
       },
 
       setUserData: (state, action) => {
         state.user = { ...state.user, ...action.payload };
-        console.log(action.payload)
+
+        
+        console.log(action.payload, "set user")
         state.login = true; 
+        // state.error = false;
       },
     
  loginSuccess: (state, action) => {
     console.log('Login success action dispatched:', action.payload);
-    state.login = true; 
-    state.user = { ...state.user, ...action.payload.user }; 
+    state.login = true;
+    state.user = { ...state.user, ...action.payload }; 
+    // state.user = { ...action.payload.user }; // Ensure only user details are in state.user 
+    // state.error = false;
     state.error = null;
   },
   logout: (state) => {
     state.login = false;
-    state.user = null;
+    state.user ={};
+    state.authUser ={};
   },
   loginError: (state, action) => {
+    state.login = false;
     state.error = action.payload;
+    state.user =null;
+    state.authUser =null;
   },
    
     },
@@ -59,10 +68,14 @@ export const loginUser = (email, password) => async (dispatch) => {
       userDoc.onSnapshot((snapshot) => {
         const authUserData = snapshot.data();
         dispatch(loginSuccess({ user, authUser: authUserData }));
+        dispatch(setUserData({ user, authUser: authUserData }));
       });
+      // userDoc.get().then((snapshot) => {
+      //   const authUserData = snapshot.data();
+      //   dispatch(loginSuccess({ user, authUser: authUserData }));
+      // });
+     
 
-      console.log(userDoc)
-      console.log( authUserData, "lxhh" )
     } catch (error) {
       dispatch(loginError(error.message));
     }
@@ -70,12 +83,17 @@ export const loginUser = (email, password) => async (dispatch) => {
 
 
 export const logoutUser = () => async (dispatch) => {
-    try {
-      await auth.signOut();
-      dispatch(logout());
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
+  try {
+    console.log('Logging out...'); // Add this log
+    await auth.signOut();
+    dispatch(logout());
+    dispatch(addAuthUser({ user: null, authUser: null }));
+    dispatch(loginSuccess({ user: null, authUser: null }));
+    
+    console.log('Logout successful');
+  } catch (error) {
+    console.error('Error during logout:', error);
+  }
   };
   
 export const createEmailAccount = (authUser) => async (dispatch) => {
@@ -93,11 +111,8 @@ export const createEmailAccount = (authUser) => async (dispatch) => {
         phoneNumber: authUser.phoneNumber,
       });
   
-      // Listen for changes to the document
       userRef.onSnapshot((snapshot) => {
         const userData = snapshot.data();
-  
-        // Dispatch the updated user data to the Redux store
         dispatch(loginSuccess({ user, authUser: userData }));
       });
       dispatch(addAuthUser({ user, authUser: userData }));
@@ -111,11 +126,17 @@ export const createEmailAccount = (authUser) => async (dispatch) => {
     try {
       const collectionRef = db.collection('users');
       const snapshot = await collectionRef.get();
-      const userData = snapshot.docs.map((doc) => (doc.data())).find((user) => user.id === uid) ;
-      console.log(userData,"fiif")
-    await dispatch(setUserData(userData));
-    await  dispatch(loginSuccess(userData));
-    
+      const userDataArray = snapshot.docs.map((doc) => doc.data())
+      const foundUser = userDataArray.find((user) => {
+        console.log('User UIDs:', uid, user.uid);
+        return user.email === uid;
+      });
+      console.log(foundUser,"firebase")
+      if (foundUser) {
+        await dispatch(setUserData(foundUser));
+        await dispatch(addAuthUser(foundUser));
+        await dispatch(loginSuccess(foundUser));
+      }
     ;
    
     } catch (error) {
