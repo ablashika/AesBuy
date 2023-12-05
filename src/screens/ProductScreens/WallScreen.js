@@ -4,6 +4,8 @@ import { MaterialCommunityIcons, Feather, EvilIcons, MaterialIcons } from "@expo
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, setProducts, addToSelectedItems,setLoading } from "../../redux/slice/userSlice";
 import { FlatGrid } from "react-native-super-grid";
+import Authenticated from "../Components/Authenticated";
+import BouncingLoader from "../Components/Loader";
 
 
 function WallScreen({ navigation }) {
@@ -11,14 +13,18 @@ function WallScreen({ navigation }) {
   const products = useSelector((state) => state.user.products);
   const [toggleStates, setToggleStates] = useState({});
   const [loadingData, setLoadingData] = useState(false);
-
+  const isAuthenticated = useSelector((state) => state.auth.login);
+  
 
 
   useEffect(() => {
     dispatch(getProducts()); 
     dispatch(setLoading(true)) 
   }, [dispatch]);
-  
+  useEffect(() => {
+    console.log("currentUser changed:", isAuthenticated);
+  }, [isAuthenticated]);
+
 
   const loading = useSelector((state) => state.user.loading);
   console.log(loading,"heyy")
@@ -53,7 +59,9 @@ function WallScreen({ navigation }) {
   if (loading || loadingData) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+
+        <BouncingLoader/>
+        {/* <Text>Loading...</Text> */}
       </View>
     );
   }
@@ -110,44 +118,7 @@ function WallScreen({ navigation }) {
         keyExtractor={(item) => `${item.id}`}
       />
       
-      <View style={styles.buttonTab}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: 40,
-            width: 220,
-            borderRadius: 30,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name="home-variant-outline"
-              size={24}
-              color="#b3b3b3"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Cart");
-            }}
-          >
-            <Feather name="shopping-cart" size={20} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <EvilIcons name="search" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ProfileScreen");
-            }}
-          >
-            <MaterialIcons name="person" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Authenticated  navigation={navigation} isAuthenticated={isAuthenticated}/>
     </View>
   );
 }

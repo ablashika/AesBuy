@@ -7,11 +7,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { getShoes } from "../../redux/slice/userSlice";
 import {  useDispatch, useSelector } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
+import Authenticated from "../Components/Authenticated";
 
 function ShoeScreen({ navigation}) {
   const dispatch = useDispatch();
-
   let shoes = useSelector((state)=>state.user.shoes)
+  const isAuthenticated = useSelector((state) => state.auth.login);
 
   useEffect(() => {
     dispatch(getShoes())
@@ -53,10 +54,11 @@ function ShoeScreen({ navigation}) {
             </View>
           );
         }}
-        keyExtractor={(item, index) => `${item.name}-${index}`}
+        keyExtractor={(item) => `${item.id}`}
       />
+      <Authenticated  navigation={navigation} isAuthenticated={isAuthenticated}/>
 
-      <View style={styles.buttonTab}>
+      {/* <View style={styles.buttonTab}>
         <View
           style={{
             backgroundColor: "white",
@@ -93,7 +95,7 @@ function ShoeScreen({ navigation}) {
             <MaterialIcons name="person" size={24} color="#b3b3b3" />
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }

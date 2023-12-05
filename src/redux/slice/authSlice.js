@@ -38,14 +38,14 @@ const authSlice = createSlice({
     state.error = null;
   },
   logout: (state) => {
-    state.login = false;
     state.user ={};
     state.authUser ={};
+    state.login=false 
   },
   loginError: (state, action) => {
     state.login = false;
     state.error = action.payload;
-    state.user =null;
+    state.user = null;
     state.authUser =null;
   },
    
@@ -78,10 +78,7 @@ export const logoutUser = () => async (dispatch) => {
     console.log('Logging out...'); // Add this log
     await auth.signOut();
     dispatch(logout());
-    dispatch(addAuthUser({ user: null, authUser: null }));
-    dispatch(loginSuccess({ user: null, authUser: null }));
-    
-    console.log('Logout successful');
+   console.log('Logout successful');
   } catch (error) {
     console.error('Error during logout:', error);
   }
@@ -127,6 +124,9 @@ export const createEmailAccount = (authUser) => async (dispatch) => {
          await dispatch(setUserData(foundUser));
         // await dispatch(addAuthUser(foundUser));
         await dispatch(loginSuccess(foundUser));
+      } else{
+        dispatch(logout());
+        // await loginSuccess({ user: null, authUser: null, login:false })
       }
     ;
    

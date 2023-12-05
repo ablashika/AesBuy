@@ -7,10 +7,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { getClothes } from "../../redux/slice/userSlice";
 import {useDispatch,useSelector } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
+import Authenticated from "../Components/Authenticated";
+import ToogleHeart from "../Components/ToogleHeart";
 
 function Clothes({ navigation}) {
   const dispatch = useDispatch();
   const clothes = useSelector((state) => state.user.clothes);
+  const isAuthenticated = useSelector((state) => state.auth.login);
 
 console.log(clothes,"jss")
   useEffect(() => {
@@ -50,6 +53,7 @@ console.log(clothes,"jss")
                 >
                   {item.name}
                 </Text>
+                <ToogleHeart/>
               </TouchableOpacity>
             </View>
           );
@@ -57,44 +61,7 @@ console.log(clothes,"jss")
         keyExtractor={(item, index) => `${item.name}-${index}`}
       />
 
-      <View style={styles.buttonTab}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: 40,
-            width: 220,
-            borderRadius: 30,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name="home-variant-outline"
-              size={24}
-              color="#b3b3b3"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Cart");
-            }}
-          >
-            <Feather name="shopping-cart" size={20} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <EvilIcons name="search" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ProfileScreen");
-            }}
-          >
-            <MaterialIcons name="person" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-        </View>
-      </View>
+<Authenticated  navigation={navigation} isAuthenticated={isAuthenticated}/>
     </View>
   );
 }
