@@ -385,11 +385,11 @@ const handleOnSubmit = async () => {
         await dispatch(loginUser( loginData.email, loginData.password)); // Then login
     
         if (authError ) { 
-          navigation.navigate('WallScreen');
+          navigation.navigate('LogIn');
         }
         else{
-            console.log(authError,"no errorrr")
-            navigation.navigate('LogIn');
+            // console.log(authError,"no errorrr")
+            // navigation.navigate('WallScreen');
         }
       } catch (error) {
         console.error('Login error:', error);

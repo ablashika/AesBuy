@@ -20,13 +20,10 @@ const authSlice = createSlice({
     addAuthUser: (state, action) => {
         state.authUser = { ...state.authUser, ...action.payload };
         state.login = true; 
-        // state.error = {};
       },
 
       setUserData: (state, action) => {
-        state.user = { ...state.user, ...action.payload };
-
-        
+        state.user = { ...state.user, ...action.payload };   
         console.log(action.payload, "set user")
         state.login = true; 
         // state.error = false;
@@ -35,8 +32,8 @@ const authSlice = createSlice({
  loginSuccess: (state, action) => {
     console.log('Login success action dispatched:', action.payload);
     state.login = true;
-    state.user = { ...state.user, ...action.payload }; 
-    // state.user = { ...action.payload.user }; // Ensure only user details are in state.user 
+    state.authUser = { ...state.authUser, ...action.payload }; 
+     state.user = { ...state.user, ...action.payload  }; // Ensure only user details are in state.user 
     // state.error = false;
     state.error = null;
   },
@@ -63,18 +60,12 @@ export const loginUser = (email, password) => async (dispatch) => {
     try {
       const userCredential = await auth.signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
+
+      console.log(user,'HEYYY')
   
-      const userDoc = db.collection('users').doc(user.uid);
-      userDoc.onSnapshot((snapshot) => {
-        const authUserData = snapshot.data();
-        dispatch(loginSuccess({ user, authUser: authUserData }));
-        dispatch(setUserData({ user, authUser: authUserData }));
-      });
-      // userDoc.get().then((snapshot) => {
-      //   const authUserData = snapshot.data();
-      //   dispatch(loginSuccess({ user, authUser: authUserData }));
-      // });
-     
+      dispatch(fetchUserData(user.uid));
+      dispatch(addAuthUser({ user, authUser: user}));
+      dispatch(loginSuccess({ user, authUser: user }));
 
     } catch (error) {
       dispatch(loginError(error.message));
@@ -129,12 +120,12 @@ export const createEmailAccount = (authUser) => async (dispatch) => {
       const userDataArray = snapshot.docs.map((doc) => doc.data())
       const foundUser = userDataArray.find((user) => {
         console.log('User UIDs:', uid, user.uid);
-        return user.email === uid;
+        return user.uid === uid;
       });
       console.log(foundUser,"firebase")
       if (foundUser) {
-        await dispatch(setUserData(foundUser));
-        await dispatch(addAuthUser(foundUser));
+         await dispatch(setUserData(foundUser));
+        // await dispatch(addAuthUser(foundUser));
         await dispatch(loginSuccess(foundUser));
       }
     ;
