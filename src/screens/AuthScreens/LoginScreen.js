@@ -389,7 +389,7 @@ const handleOnSubmit = async () => {
         }
         else{
             // console.log(authError,"no errorrr")
-            // navigation.navigate('WallScreen');
+            navigation.navigate('WallScreen');
         }
       } catch (error) {
         console.error('Login error:', error);
