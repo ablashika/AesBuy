@@ -1,26 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { getShoes } from "../../redux/slice/userSlice";
+import { View, StyleSheet, Text, TouchableOpacity, Image , RefreshControl} from "react-native";
+import { getShoes,setLoading  } from "../../redux/slice/userSlice";
 import {  useDispatch, useSelector } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
 import Authenticated from "../Components/Authenticated";
+import BouncingLoader from "../Components/Loader";
+import ToggleHeart from "../Components/ToogleHeart";
 
 function ShoeScreen({ navigation}) {
-  const dispatch = useDispatch();
-  let shoes = useSelector((state)=>state.user.shoes)
-  const isAuthenticated = useSelector((state) => state.auth.login);
 
+  const [loadingData, setLoadingData] = useState(false);
+  const shoes = useSelector((state)=>state.user.shoes)
+  const isAuthenticated = useSelector((state) => state.auth.login);
+  const loading = useSelector((state) => state.user.loading);
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(getShoes())
   }, []);
 
+
+
+  const onRefresh = async () => {
+    dispatch(setLoading(true));
+    setLoadingData(true);
+  
+    try {
+      dispatch(getShoes([]));
+      await dispatch(getShoes());
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoadingData(false);
+      dispatch(setLoading(false));
+    }
+  };
+  
+
+
+if (loading || loadingData) {
+    return (
+      <View style={styles.container}>
+        <BouncingLoader/>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatGrid
+      refreshControl={
+        <RefreshControl
+         refreshing={loading} 
+         onRefresh={onRefresh}
+        />
+      }
         showsVerticalScrollIndicator={false}
         data={shoes}
         renderItem={({ item }) => {
@@ -50,6 +84,7 @@ function ShoeScreen({ navigation}) {
                 >
                   {item.name}
                 </Text>
+                <ToggleHeart/>
               </TouchableOpacity>
             </View>
           );
@@ -57,45 +92,6 @@ function ShoeScreen({ navigation}) {
         keyExtractor={(item) => `${item.id}`}
       />
       <Authenticated  navigation={navigation} isAuthenticated={isAuthenticated}/>
-
-      {/* <View style={styles.buttonTab}>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: 40,
-            width: 220,
-            borderRadius: 30,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name="home-variant-outline"
-              size={24}
-              color="#b3b3b3"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Cart");
-            }}
-          >
-            <Feather name="shopping-cart" size={20} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <EvilIcons name="search" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ProfileScreen");
-            }}
-          >
-            <MaterialIcons name="person" size={24} color="#b3b3b3" />
-          </TouchableOpacity>
-        </View>
-      </View> */}
     </View>
   );
 }
@@ -105,7 +101,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#f9f8fc",
+    // #e9e6f5
   },
 
   newContainer: {

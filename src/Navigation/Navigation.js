@@ -23,18 +23,29 @@ export default function Navigation() {
   function HomeScreen() {
     return (
       <Tab.Navigator
-        style={{ backgroundColor: "#e9e6f5" }}
+        style={{ backgroundColor: "#f5f3fa" }}
         initialRouteName="Feed"
-        tabBarOptions={{
-          labelStyle: { fontSize: 12 },
-          style: { backgroundColor: "#e9e6f5", marginTop: 30 },
-          indicatorStyle: {
-            height: null,
-            margin: 5,
-            top: 0,
-            backgroundColor: "white",
-            borderRadius: 30,
+        screenOptions={{
+          tabBarStyle: { backgroundColor: "#f9f8fc", marginTop: 30, color:"white", },
+          tabBarIndicatorStyle: {
+            // height: null,
+            // margin: 5,
+            // top: 0,
+            //  width:"20%",
+            backgroundColor: "#a797bd",
+
           },
+          // tabBarItemStyle: { color: "#333" }, // Set the color for the entire tab bar item
+          tabBarLabelStyle: { fontWeight:"bold"},
+          // labelStyle: { fontSize: 12 },
+          // style: { backgroundColor: "#f5f3fa", marginTop: 30, border:0 },
+          // indicatorStyle: {
+          //   height: null,
+          //   margin: 5,
+          //   top: 0,
+          //   backgroundColor: "white",
+          //   borderRadius: 30,
+          // },
         }}
       >
         <Tab.Screen name="trendy" component={WallScreen} />

@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from "react";
 import { View, StyleSheet, Text, Image, RefreshControl, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons, Feather, EvilIcons, MaterialIcons } from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, setProducts, addToSelectedItems,setLoading } from "../../redux/slice/userSlice";
 import { FlatGrid } from "react-native-super-grid";
@@ -8,7 +8,9 @@ import Authenticated from "../Components/Authenticated";
 import BouncingLoader from "../Components/Loader";
 
 
+
 function WallScreen({ navigation }) {
+  
   const dispatch = useDispatch();
   const products = useSelector((state) => state.user.products);
   const [toggleStates, setToggleStates] = useState({});
@@ -59,9 +61,7 @@ function WallScreen({ navigation }) {
   if (loading || loadingData) {
     return (
       <View style={styles.container}>
-
         <BouncingLoader/>
-        {/* <Text>Loading...</Text> */}
       </View>
     );
   }
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#f9f8fc",
   },
 
   newContainer: {
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
   },
 
   textContainerTwo: {
-    // backgroundColor: "",
     height: 40,
     width: 100,
     justifyContent: "center",
@@ -192,7 +191,6 @@ const styles = StyleSheet.create({
     margin: 5,
     width: 80,
     marginLeft: 15,
-    // backgroundColor: "white",
   },
 
   buttonTab: {

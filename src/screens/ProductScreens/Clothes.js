@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { getClothes } from "../../redux/slice/userSlice";
+import { View, StyleSheet, Text, TouchableOpacity, Image, RefreshControl } from "react-native";
+import { getClothes,setLoading } from "../../redux/slice/userSlice";
 import {useDispatch,useSelector } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
 import Authenticated from "../Components/Authenticated";
 import ToogleHeart from "../Components/ToogleHeart";
+import BouncingLoader from "../Components/Loader";
 
 function Clothes({ navigation}) {
-  const dispatch = useDispatch();
+  const [loadingData, setLoadingData] = useState(false);
   const clothes = useSelector((state) => state.user.clothes);
   const isAuthenticated = useSelector((state) => state.auth.login);
+  const loading = useSelector((state) => state.user.loading);
+
+  const dispatch = useDispatch();
+  
+  console.log(loading,"heyy")
+
 
 console.log(clothes,"jss")
   useEffect(() => {
@@ -21,9 +24,37 @@ console.log(clothes,"jss")
      dispatch(getClothes())
   }, []);
 
+
+  const onRefresh = async () => {
+    dispatch(setLoading(true));
+    setLoadingData(true);
+  
+    try {
+      dispatch(getClothes([]));
+      await dispatch(getClothes());
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoadingData(false);
+      dispatch(setLoading(false));
+    }
+  };
+  
+
+if (loading || loadingData) {
+    return (
+      <View style={styles.container}>
+       <BouncingLoader/>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatGrid
+       refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={onRefresh}  />
+      }
         showsVerticalScrollIndicator={false}
         data={clothes}
         renderItem={({ item }) => {
@@ -71,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#f9f8fc",
   },
 
   newContainer: {
