@@ -367,7 +367,7 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
   const user = useSelector((state) => state.auth.authUser);
-  console.log(authError,"heyyy")
+   console.log(authError,"heyyy")
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -381,15 +381,12 @@ export default function LoginScreen({ navigation }) {
 
 const handleOnSubmit = async () => {
     try {
-        await dispatch(addAuthUser(loginData)); // Add user first
+        await dispatch(addAuthUser(loginData));
         await dispatch(loginUser( loginData.email, loginData.password)); // Then login
     
-        if (authError ) { 
-          navigation.navigate('LogIn');
-        }
-        else{
-            // console.log(authError,"no errorrr")
-            navigation.navigate('WallScreen');
+        if (authError) { 
+          navigation.navigate('WallScreen');
+          console.log(authError)
         }
       } catch (error) {
         console.error('Login error:', error);
@@ -399,10 +396,8 @@ const handleOnSubmit = async () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 0.2, backgroundColor: "green" }}></View>
-      <View style={styles.main}>
-        <View style={styles.mainContainer}>
-          <View style={{ justifyContent: "space-between", flexDirection: "row", margin: 40 }}>
+      <View style={styles.top}>
+      <View style={{ justifyContent: "space-between", flexDirection: "row", margin: 40 }}>
             <TouchableOpacity
               style={{
                 height: 30,
@@ -418,46 +413,47 @@ const handleOnSubmit = async () => {
             >
               <EvilIcons name="close" size={15} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleOnSubmit()}
-              style={{
-                backgroundColor: "black",
-                height: 30,
-                width: 80,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Text style={{ color: "white" }}>Login</Text>
-            </TouchableOpacity>
+            {/*  */}
           </View>
+      </View>
+     
+        <View style={styles.mainContainer}>
 
           <View style={{ margin: 20, marginTop: 10 }}>
           {authError ? <Text >enter valid email</Text> : null}
-            <Text style={{ color: "white", fontWeight: "bold" }}>Email</Text>
+            <Text style={{ color: "black", fontWeight:"200", marginBottom:10 }}>Email</Text>
             <TextInput
               value={loginData.email}
               onChangeText={(text) => handleUpdateState("email", text)}
-              style={{ marginTop: 10 }}
+              style={styles.TextInput}
               placeholderTextColor="#dfe3eb"
               placeholder="kofo@gmail.com"
             ></TextInput>
           </View>
 
-          <View style={{ margin: 20, marginTop: 10 }}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>Password</Text>
+          <View style={{ margin: 20}}>
+            <Text style={{ color: "black", fontWeight:"200", marginBottom:10  }}>Password</Text>
             <TextInput
               value={loginData.password}
               onChangeText={(text) => handleUpdateState("password", text)}
-              style={{ marginTop: 10 }}
+              style={styles.TextInput}
               placeholderTextColor="#dfe3eb"
               placeholder="Password"
               secureTextEntry={true}
             ></TextInput>
           </View>
+
+          <View  style={styles.loginView}>
+          <TouchableOpacity
+          style={styles.login}
+              onPress={() => handleOnSubmit()}
+             
+            >
+              <Text style={{ color: "white" }}>Login</Text>
+            </TouchableOpacity>
+          </View>
           
-          <View style={{ alignItems:"center", justifyContent: "center", flexDirection: "column", }}>
+          <View style={{ alignItems:"center", justifyContent: "center", flexDirection: "row", }}>
             
              <Text>Don't have an account?</Text>
     
@@ -466,18 +462,19 @@ const handleOnSubmit = async () => {
               onPress={() => navigation.navigate("SignUp") }
             
               style={{
-                backgroundColor: "black",
-                height: 40,
-                width: 80,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
+                borderBottomWidth:2
+                // backgroundColor: "black",
+                // height: 40,
+                // width: 80,
+                // justifyContent: "center",
+                // alignItems: "center",
+                // borderRadius: 20,
               }}
             >
-              <Text style={{ color: "white" }}>Sign Up</Text>
+              <Text style={{ color: "black" }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-        </View>
+     
       </View>
     </View>
   );
@@ -488,20 +485,60 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#F9FFFD",
+  },
+  top:{
+    flex: 1,
+    height:200,
+   width: 400,
+  //  backgroundColor:"red",
+  //  justifyContent:"center"
+
   },
   mainContainer: {
-    backgroundColor: "#a797bd",
+    backgroundColor: "#F9FFFD",
     width: 370,
     borderRadius: 50,
-    height: 400,
+    height: 500,
+    flex: 4,
+    // justifyContent:"center",
+    alignItems:"center",
   },
-  main: {
-    backgroundColor: "#e9e6f5",
-    width: 370,
-    height: 100,
-    flex: 5.8,
-    borderTopEndRadius: 50,
-    borderTopStartRadius: 50,
+
+  loginView:{
+    flex: 0.5,
+    width:350,
+    // justifyContent:"center",
+    alignItems:"center",
+ 
+
+ 
   },
+  login:{
+    backgroundColor:"black",
+    justifyContent:"center",
+    alignItems:"center",
+    height:50,
+    width:350,
+    borderRadius:10,
+    padding:10,
+    margin:20
+
+
+  },
+
+
+  TextInput:{
+    // backgroundColor:"#e5f7f2",
+    height:50,
+    width:350,
+    borderRadius:10,
+    padding:10,
+    justifyContent:"center",
+    alignItems:"center",
+    borderColor:"black",
+    borderWidth:1
+
+  }
+ 
 });

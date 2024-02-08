@@ -109,7 +109,7 @@ function WallScreen({ navigation }) {
                 <MaterialIcons
                   name={toggleStates[item.id]  ? "favorite" : "favorite-border"}
                   size={24}
-                  color="#333"
+                  color="#01383b"
                 />
               </TouchableOpacity>
             </TouchableOpacity>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f9f8fc",
+    backgroundColor: "#F9FFFD",
   },
 
   newContainer: {

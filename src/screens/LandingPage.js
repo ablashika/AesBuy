@@ -1,74 +1,4 @@
-// import React, { useEffect, useRef } from 'react';
-// import { View, Text, StyleSheet, Animated,TouchableOpacity } from 'react-native';
-
-// const LandingPage = ({ navigation }) => {
-//   const fadeAnim = useRef(new Animated.Value(0)).current;
-
-//   const fadeInAnimation = Animated.timing(fadeAnim, {
-//     toValue: 1,
-//     duration: 3000,
-//     useNativeDriver: true,
-//    });
-
-   
-//   useEffect(() => {
-//     const startAnimation = () => {
-//       fadeInAnimation.start();
-//     };
-
-//     setTimeout(startAnimation, 3000); 
-//   }, [fadeInAnimation]);
-
-  
-
- 
-
-//   return (
-//     <View style={styles.container}>
-//           <Animated.Text style={[styles.welcomeText, { opacity: fadeAnim }]}>Welcome To AesBuy!</Animated.Text>
-    
-//           <View >
-//         <TouchableOpacity
-//           onPress={() => {
-//             navigation.navigate("LogIn");
-//           }}
-     
-//         >
-
-//         <Text style={{ fontWeight: "bold" }}
-//           >Want To Supply Dope Out fit?</Text>
-    
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//           onPress={() => {
-//             navigation.navigate("WallScreen");
-//           }}
-//         >
-//           <Text style={{ fontWeight: "bold" }}
-//           >Check Out Our Dope OutFit</Text>
-//         </TouchableOpacity>
-//       </View>
-
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#e9e6f5',
-//   },
-//   welcomeText: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#333',
-//   },
-// });
-
-// export default LandingPage;
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 
 const LandingPage = ({ navigation }) => {
@@ -82,8 +12,9 @@ const LandingPage = ({ navigation }) => {
 
   useEffect(() => {
     const startAnimation = () => {
-      fadeInAnimation.start();
-      setAnimationComplete(true);
+      fadeInAnimation.start(() => {
+        setAnimationComplete(true);
+      });
     };
 
     setTimeout(startAnimation, 3000);
@@ -92,31 +23,34 @@ const LandingPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Animated.Text style={[styles.welcomeText, { opacity: fadeAnim }]}>Welcome To AesBuy!</Animated.Text>
-
-      {isAnimationComplete ? (
-        <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('LogIn');
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Want To Supply Dope Outfit?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('WallScreen');
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Check Out Our Dope Outfit</Text>
-        </TouchableOpacity>
-      </View>
-  
-      ) : 
-      null
+      <View style={styles.imgBox}></View>
+      {isAnimationComplete?
+        (null):(
+          <Animated.Text style={[styles.welcomeText, { opacity: fadeAnim }]}>
+        Welcome To D'trove!
+      </Animated.Text>
+        )
       }
+      {!isAnimationComplete ? null : (
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('LogIn');
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Want To Supply Outfit?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('WallScreen');
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Check Out Our Outfit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -126,26 +60,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e9e6f5',
+    backgroundColor: "#01383b",
   },
   welcomeText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: '400',
+    color: '#ffffff',
   },
   buttonsContainer: {
     marginTop: 20,
   },
   button: {
     marginTop: 10,
-    padding: 15,
-    backgroundColor: '#a797bd',
+    height: 40,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
+    backgroundColor: '#e9eeed',
     borderRadius: 8,
     alignItems: 'center',
   },
   buttonText: {
     fontWeight: 'bold',
-    color: 'white',
+    color: '#1C2917',
   },
 });
 

@@ -23,16 +23,16 @@ export default function Navigation() {
   function HomeScreen() {
     return (
       <Tab.Navigator
-        style={{ backgroundColor: "#f5f3fa" }}
+        style={{ backgroundColor: "#F9FFFD" }}
         initialRouteName="Feed"
         screenOptions={{
-          tabBarStyle: { backgroundColor: "#f9f8fc", marginTop: 30, color:"white", },
+          tabBarStyle: { backgroundColor: "#F9FFFD", marginTop: 30, color:"white", },
           tabBarIndicatorStyle: {
             // height: null,
             // margin: 5,
             // top: 0,
             //  width:"20%",
-            backgroundColor: "#a797bd",
+            backgroundColor: "#01383b",
 
           },
           // tabBarItemStyle: { color: "#333" }, // Set the color for the entire tab bar item
@@ -61,11 +61,15 @@ export default function Navigation() {
         screenOptions={{
           headerBackTitleVisible: false,
           headerStyle: {
-            backgroundColor: "#e9e6f5",
+            backgroundColor: "#F9FFFD",
           },
         }}
       >
-        <Stack.Screen name="screen" component={LandingPage} />
+        <Stack.Screen name="screen"
+         options={{
+          header: () => null,
+        }}
+        component={LandingPage} />
         <Stack.Screen
           options={{
             header: () => null,
@@ -79,8 +83,16 @@ export default function Navigation() {
       
         />
         <Stack.Screen name="Cart" component={Cart} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="LogIn" component={LoginScreen} />
+        <Stack.Screen 
+        options={{
+          header: () => null,
+        }}
+        name="SignUp" component={SignUpScreen} />
+        <Stack.Screen 
+        options={{
+          header: () => null,
+        }}
+        name="LogIn" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -89,7 +101,7 @@ export default function Navigation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#F9FFFD",
     alignItems: "center",
     justifyContent: "center",
   },

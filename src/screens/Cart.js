@@ -111,7 +111,7 @@ export default function Cart({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e9e6f5",
+    backgroundColor: "#F9FFFD",
     alignItems: "center",
     // justifyContent: "center",
   },
