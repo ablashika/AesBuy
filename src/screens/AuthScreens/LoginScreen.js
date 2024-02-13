@@ -386,6 +386,8 @@ const handleOnSubmit = async () => {
     
         if (authError) { 
           navigation.navigate('WallScreen');
+        }
+        else{
           console.log(authError)
         }
       } catch (error) {

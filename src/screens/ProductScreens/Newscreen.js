@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity,Animated,Easing  } from "react-native";
 import { getProducts } from "../../redux/actions/userActions";
-import { connect, useDispatch } from "react-redux";
+import {useDispatch } from "react-redux";
 import call from "react-native-phone-call";
+import { EvilIcons } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
 
 function Newscreen({
   navigation,
@@ -11,14 +13,25 @@ function Newscreen({
   },
 }) {
   const dispatch = useDispatch();
-  // console.log("Details => ", item_details);
-
   useEffect(() => {
     getProducts(dispatch);
   }, []);
 
   const [count, setCount] = useState(0);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [animValue] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.timing(animValue, {
+      toValue: 1,
+      duration: 2500, // Adjust the duration as needed
+      delay: 3000, // Delay before animation starts
+      useNativeDriver: true,
+      easing: Easing.linear,
+    }).start(() => {
+      setIsReady(true); // Set isReady to true after animation completes
+    });
+  }, []);
 
   const triggerCall = () => {
     if (item_details.phoneNumber.length != 10) {
@@ -36,34 +49,65 @@ function Newscreen({
 
   return (
     <View style={styles.container}>
-      <View style={styles.navContainer}></View>
+       <View style={styles.top}>
+      <View style={{ justifyContent: "space-between", flexDirection: "row", margin: 40 }}>
+            <TouchableOpacity
+              style={{
+                height: 30,
+                width: 30,
+                backgroundColor: "black",
+                borderRadius: 15,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                navigation.navigate("WallScreen");
+              }}
+            >
+              <EvilIcons name="close" size={15} color="white" />
+            </TouchableOpacity>
+            {/*  */}
+          </View>
+      </View>
       <View style={styles.mainContainer}>
         <View style={styles.midBox}>
-          <View style={styles.card}>
-            <Text style={{ color: "white", marginTop: 20, fontWeight: "bold" }}>
-              {item_details.name}
-            </Text>
-
-            <Text style={{ color: "white", margin: 20 }}>
-              {item_details.description}
-            </Text>
-
-            <Text style={{ color: "white", marginTop: 5, fontWeight: "bold" }}>
-              {item_details.price}
-            </Text>
-          </View>
+          <TouchableOpacity style={styles.card}>
+          {!isReady ? (
+            <View >
+              <Text style={{ color: "white", fontWeight: "200", fontSize: 25, textAlign: "center" }}>
+                {item_details.name}
+              </Text>
+            </View>
+          ) : (
+            <Animated.View style={ { opacity: animValue }}>
+              <Text style={{ color: "white", fontWeight: "120", margin: 20, fontSize: 10, textAlign: "center" }}>
+                {item_details.description}
+              </Text>
+              <Text style={{ color: "white", marginTop: 5, fontWeight: "100" , textAlign: "center"}}>
+                {item_details.price}
+              </Text>
+            </Animated.View>
+                 )}
+          </TouchableOpacity>
+        
+         
           <View style={styles.icons}></View>
         </View>
-        <View style={styles.midBox}>
-          <View style={styles.imageBox}>
+       
+        <View style={styles.imageBox}>
+          <View style={styles.imageBox}> 
+          <ScrollView>
+
             <Image
               style={{ height: 350, width: 150, borderRadius: 20 }}
               source={{
                 uri: "data:image/jpeg;base64," + item_details.image,
               }}
             />
+            </ScrollView>
           </View>
         </View>
+        
       </View>
       <View style={styles.lastbox}>
         <View style={styles.addItem}>
@@ -91,45 +135,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  top:{
+    flex: 1,
+    height:50,
+   width: 400,
 
-  navContainer: {
-    flex: 0.7,
+    justifyContent:"center"
 
-    width: 500,
   },
   mainContainer: {
-    flex: 3,
+    flex: 2.5,
     width: 500,
     flexDirection: "row",
     justifyContent: "center",
+    // backgroundColor: "#01383b",
   },
   midBox: {
-    height: 600,
+    // height: 600,
     width: 180,
-    margin: 5,
+    margin: 2,
     alignItems: "center",
+    justifyContent:"center",
+    // backgroundColor: "#9cd6bd",
   },
 
   card: {
-    // height: 250,
+     height: 350,
     width: 150,
     backgroundColor: "black",
-    margin: 5,
-    marginTop: 40,
+    // margin: 5,
+    // marginTop: 40,
+    borderRadius: 20,
     alignItems: "center",
-    paddingBottom:10
+    // paddingBottom:10,
+    flexDirection:"column",
+    alignItems:"center",
+    justifyContent:"center"
+
   },
 
   imageBox: {
-    backgroundColor: "white",
-    height: 350,
-    width: 150,
-    marginRight: 20,
-    borderRadius: 20,
+    width: 180,
+    margin: 2,
+    alignItems: "center",
+    justifyContent:"center",
+    // backgroundColor: "#9cd6bd",
+
   },
   lastbox: {
-    // backgroundColor: "black",
-    flex: 2,
+    //  backgroundColor: "black",
+    flex: 1.5,
     width: 300,
     flexDirection: "row",
     alignItems: "flex-start",
@@ -148,11 +203,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buyItem: {
-    backgroundColor: "#f19900",
+    backgroundColor: "black",
     height: 35,
     width: 80,
     marginTop: 50,
-    color: "black",
     margin: 10,
     justifyContent: "center",
     alignItems: "center",

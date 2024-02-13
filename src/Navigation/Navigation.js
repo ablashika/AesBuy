@@ -77,7 +77,11 @@ export default function Navigation() {
           name="WallScreen"
           component={HomeScreen}
         />
-        <Stack.Screen name="Newscreen" component={Newscreen} />
+        <Stack.Screen
+        options={{
+          header: () => null,
+        }}
+        name="Newscreen" component={Newscreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="AddProduct" component={AddProduct} 
       
