@@ -6,9 +6,8 @@ import { addAuthUser, createEmailAccount } from '../../redux/slice/authSlice';
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
-  const authUsers = useSelector((state) => state.auth.authUser);
-  console.log(authUsers,"user")
   const authError = useSelector((state) => state.auth.error);
+  const [emailError, setEmailError] = useState(null);
 
   const [authUser, setAuthUser] = useState({
     name: "",
@@ -22,30 +21,41 @@ export default function SignUpScreen({ navigation }) {
   }
 
   const handleOnsubmit = async () => { 
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(authUser.email)) {
+        setEmailError("Invalid email format");
+        return;
+      } else {
+        setEmailError(null);
+      dispatch(addAuthUser(authUser));
+     dispatch(createEmailAccount(authUser));
+        
+
+      }
+   
          try { 
-             dispatch(addAuthUser(authUser));
-              await dispatch(createEmailAccount(authUser));
-            console.log(authUser, "rr");
             if (authError) {
-              console.log(authError,"err")
-            
-           await navigation.navigate('WallScreen')
+              console.log(authError,"err")    
+        }
+        else{
+          navigation.navigate('WallScreen')
         }
       } catch (error) {
         console.error('Login error:', error);
       }
   };
   
-  console.log(authUser)
+
   
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <View style={{ justifyContent: "space-between", flexDirection: "row", margin: 40 }}>
+        <View style={{ justifyContent: "space-between", flexDirection: "row", marginLeft:20,  height:100, alignItems:"flex-end"  }}>
           <TouchableOpacity
             style={{
-              height: 30,
-              width: 30,
+              height: 25,
+              width: 25,
               backgroundColor: "black",
               borderRadius: 15,
               alignItems: "center",
@@ -55,13 +65,13 @@ export default function SignUpScreen({ navigation }) {
               navigation.navigate("screen");
             }}
           >
-            <EvilIcons name="close" size={15} color="white" />
+            <EvilIcons name="close" size={10} color="white" />
           </TouchableOpacity>
         </View>
       </View>
         <View style={styles.mainContainer}>
           <View style={{ margin: 20, marginTop: 10 }}>
-            {authError? <Text style={styles.errorText}>Erro logging in</Text> : null}
+            {authError || emailError? <Text style={styles.errorText}>Error logging in</Text> : null}
             <Text style={styles.label}>Name</Text>
             <TextInput
               value={authUser.name}
@@ -107,9 +117,33 @@ export default function SignUpScreen({ navigation }) {
               style={styles.signUp}
               onPress={() => handleOnsubmit()}
             >
-              <Text style={{ color: "white" }}>Submit</Text>
+              <Text style={{ color: "white" }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
+         
+          <View style={{ alignItems:"center", justifyContent: "center", flexDirection: "row", }}>
+            
+            <Text>Don't have an account?</Text>
+   
+           <TouchableOpacity
+
+             onPress={() => navigation.navigate("LogIn") }
+           
+             style={{
+               borderBottomWidth:2
+               // backgroundColor: "black",
+               // height: 40,
+               // width: 80,
+               // justifyContent: "center",
+               // alignItems: "center",
+               // borderRadius: 20,
+             }}
+           >
+             <Text style={{ color: "black" }}>Login</Text>
+           </TouchableOpacity>
+         </View>
+
+          
         </View>
     </View>
   );
@@ -133,7 +167,7 @@ const styles = StyleSheet.create({
     // width: 370,
     flex: 4,
     borderRadius: 50,
-    paddingTop: 20,
+    // paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 30,
     // justifyContent:"center",
